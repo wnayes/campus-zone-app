@@ -1,0 +1,124 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/cardBackground"
+    tools:context="wnayes.campuszoneapp.CampusZoneStopOverview">
+
+    <!-- Eastbound/Westbound labeling -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/campusZoneTanBackground"
+        android:gravity="center">
+        <TextView
+            android:text="@string/eastbound"
+            style="@style/RouteDirectionLabel"/>
+        <!-- Spacer underneath the literal green line to help center east and westbound labels.-->
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:text="@string/westbound"
+            style="@style/RouteDirectionLabel"/>
+    </LinearLayout>
+
+    <!-- The literal "green line" -->
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/lineColorGreen"
+        android:layout_width="50dp"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"/>
+
+    <!-- The station stop circles -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <view class="wnayes.campuszoneapp.CampusZoneStopOverview$StopCircleView"
+            android:id="@+id/westBankStopView"
+            android:text="@string/station_name_westbank"
+            style="@style/StopCircleStyle"/>
+        <view class="wnayes.campuszoneapp.CampusZoneStopOverview$StopCircleView"
+            android:id="@+id/eastBankStopView"
+            android:text="@string/station_name_eastbank"
+            style="@style/StopCircleStyle"/>
+        <view class="wnayes.campuszoneapp.CampusZoneStopOverview$StopCircleView"
+            android:id="@+id/stadiumVillageStopView"
+            android:text="@string/station_name_stadiumvillage"
+            style="@style/StopCircleStyle"/>
+    </LinearLayout>
+
+    <!-- The departure time labels -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:gravity="center">
+            <TextView android:id="@+id/stopDesc56001"
+                style="@style/DepartureTimeDesc"/>
+            <TextView android:id="@+id/stopTime56001"
+                android:text="@string/empty_time"
+                android:layout_below="@id/stopDesc56001"
+                style="@style/DepartureTimeTextLeft"/>
+
+            <TextView android:id="@+id/stopDesc56043"
+                style="@style/DepartureTimeDesc"
+                android:layout_alignParentRight="true"/>
+            <TextView android:id="@+id/stopTime56043"
+                android:text="@string/empty_time"
+                android:layout_below="@id/stopDesc56043"
+                style="@style/DepartureTimeTextRight"/>
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:gravity="center">
+            <TextView android:id="@+id/stopDesc56002"
+                style="@style/DepartureTimeDesc"/>
+            <TextView android:id="@+id/stopTime56002"
+                android:text="@string/empty_time"
+                android:layout_below="@id/stopDesc56002"
+                style="@style/DepartureTimeTextLeft"/>
+
+            <TextView android:id="@+id/stopDesc56042"
+                style="@style/DepartureTimeDesc"
+                android:layout_alignParentRight="true"/>
+            <TextView android:id="@+id/stopTime56042"
+                android:text="@string/empty_time"
+                android:layout_below="@id/stopDesc56042"
+                style="@style/DepartureTimeTextRight"/>
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:gravity="center">
+            <TextView android:id="@+id/stopDesc56003"
+                style="@style/DepartureTimeDesc"/>
+            <TextView android:id="@+id/stopTime56003"
+                android:text="@string/empty_time"
+                android:layout_below="@id/stopDesc56003"
+                style="@style/DepartureTimeTextLeft"/>
+
+            <TextView android:id="@+id/stopDesc56041"
+                style="@style/DepartureTimeDesc"
+                android:layout_alignParentRight="true"/>
+            <TextView android:id="@+id/stopTime56041"
+                style="@style/DepartureTimeTextRight"
+                android:text="@string/empty_time"
+                android:layout_below="@id/stopDesc56041"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
+

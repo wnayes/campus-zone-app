@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/cardBackground"
+    tools:context="wnayes.campuszoneapp.CampusZoneStopOverview">
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/lineColorGreen"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center">
+        <view class="wnayes.campuszoneapp.CampusZoneStopOverview$StopCircleView"
+            android:id="@+id/westBankStopView"
+            android:text="@string/station_name_westbank"
+            style="@style/StopCircleStyle"/>
+        <view class="wnayes.campuszoneapp.CampusZoneStopOverview$StopCircleView"
+            android:id="@+id/eastBankStopView"
+            android:text="@string/station_name_eastbank"
+            style="@style/StopCircleStyle"/>
+        <view class="wnayes.campuszoneapp.CampusZoneStopOverview$StopCircleView"
+            android:id="@+id/stadiumVillageStopView"
+            android:text="@string/station_name_stadiumvillage"
+            style="@style/StopCircleStyle"/>
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:gravity="center">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/DepartureTimeLandContainer"
+                android:layout_alignParentBottom="true">
+                <TextView android:id="@+id/stopDesc56001"
+                    style="@style/DepartureTimeDesc"/>
+                <TextView android:id="@+id/stopTime56001"
+                    android:text="@string/empty_time"
+                    style="@style/DepartureTimeText"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/DepartureTimeLandContainer"
+                android:layout_alignParentTop="true">
+                <TextView android:id="@+id/stopDesc56043"
+                    style="@style/DepartureTimeDesc"/>
+                <TextView android:id="@+id/stopTime56043"
+                    android:text="@string/empty_time"
+                    style="@style/DepartureTimeText"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:gravity="center">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/DepartureTimeLandContainer"
+                android:layout_alignParentBottom="true">
+                <TextView android:id="@+id/stopDesc56002"
+                    style="@style/DepartureTimeDesc"/>
+                <TextView android:id="@+id/stopTime56002"
+                    android:text="@string/empty_time"
+                    style="@style/DepartureTimeText"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/DepartureTimeLandContainer"
+                android:layout_alignParentTop="true">
+                <TextView android:id="@+id/stopDesc56042"
+                    style="@style/DepartureTimeDesc"/>
+                <TextView android:id="@+id/stopTime56042"
+                    android:text="@string/empty_time"
+                    style="@style/DepartureTimeText"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:gravity="center">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/DepartureTimeLandContainer"
+                android:layout_alignParentBottom="true">
+                <TextView android:id="@+id/stopDesc56003"
+                    style="@style/DepartureTimeDesc"/>
+                <TextView android:id="@+id/stopTime56003"
+                    android:text="@string/empty_time"
+                    style="@style/DepartureTimeText"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/DepartureTimeLandContainer"
+                android:layout_alignParentTop="true">
+                <TextView android:id="@+id/stopDesc56041"
+                    style="@style/DepartureTimeDesc"/>
+                <TextView android:id="@+id/stopTime56041"
+                    android:text="@string/empty_time"
+                    style="@style/DepartureTimeText"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
+

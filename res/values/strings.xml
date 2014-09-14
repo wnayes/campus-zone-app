@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Campus Zone App</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="empty_time">--:--</string>
+    <string name="station_name_eastbank">East Bank</string>
+    <string name="station_name_westbank">West Bank</string>
+    <string name="station_name_stadiumvillage">Stadium Village</string>
+    <string name="westbound">Westbound</string>
+    <string name="eastbound">Eastbound</string>
+    <string name="predicted">Predicted</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="title_activity_stop_details">StopDetailsActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

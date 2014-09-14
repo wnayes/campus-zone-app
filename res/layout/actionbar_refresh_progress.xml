@@ -1,0 +1,12 @@
+<!-- UI for the refresh button progress indication.
+     Based on the Google I/O 2012 app source code.
+     https://code.google.com/p/iosched/ -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="@dimen/abc_action_button_min_width"
+    android:minWidth="@dimen/abc_action_button_min_width">
+    <ProgressBar android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        style="?indeterminateProgressStyle" />
+</FrameLayout>

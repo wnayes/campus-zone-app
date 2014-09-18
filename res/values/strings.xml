@@ -11,10 +11,7 @@
     <string name="eastbound">Eastbound</string>
     <string name="predicted">Predicted</string>
     <string name="scheduled">Scheduled</string>
-    <string name="title_activity_stop_details">StopDetailsActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_activity_stop_details">Departures</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 

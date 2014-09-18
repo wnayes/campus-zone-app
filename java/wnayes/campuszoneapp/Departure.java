@@ -7,6 +7,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -119,6 +120,10 @@ public class Departure implements Parcelable {
         this.DepartureTime = new Date(millis + timeZoneOffSet);
     }
 
+    String getFormattedDepartureText() {
+        return new SimpleDateFormat("h:mm").format(this.DepartureTime);
+    }
+
     // Parcelable implementation
     public int describeContents() {
         return 0;
@@ -128,6 +133,7 @@ public class Departure implements Parcelable {
         out.writeByte((byte) (this.Actual ? 1 : 0));
         out.writeInt(this.BlockNumber);
         out.writeString(this.DepartureText);
+        out.writeLong(this.DepartureTime.getTime());
         out.writeString(this.Description);
         out.writeString(this.Gate);
         out.writeString(this.Route);
@@ -142,6 +148,7 @@ public class Departure implements Parcelable {
         this.Actual = in.readByte() != 0;
         this.BlockNumber = in.readInt();
         this.DepartureText = in.readString();
+        this.DepartureTime = new Date(in.readLong());
         this.Description = in.readString();
         this.Gate = in.readString();
         this.Route = in.readString();

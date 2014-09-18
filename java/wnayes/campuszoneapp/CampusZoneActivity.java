@@ -47,23 +47,20 @@ public class CampusZoneActivity extends ActionBarActivity
 
         this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
 
+        // Setup the activity when new. See onRestoreInstanceState for configuration changes.
         if (savedInstanceState == null) {
             stopOverviewFragment = new CampusZoneStopOverview();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, stopOverviewFragment)
                     .commit();
-
-            this.refreshStopTimes();
-        } else {
-            // Restore the fragment's instance
-            stopOverviewFragment = (CampusZoneStopOverview)getSupportFragmentManager().getFragment(savedInstanceState, "stopOverviewFragment");
-
-            // Restore departureInfo
-            ArrayList<Integer> stopIds = savedInstanceState.getIntegerArrayList("stopIds");
-            for (Integer stopId : stopIds) {
-                this.departureInfo.put(stopId, savedInstanceState.<Departure>getParcelableArrayList(stopId.toString()));
-            }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (this.departureInfo == null || this.departureInfo.size() < campusZoneStops.length)
+            this.refreshStopTimes();
     }
 
     @Override
@@ -85,6 +82,20 @@ public class CampusZoneActivity extends ActionBarActivity
         savedInstanceState.putIntegerArrayList("stopIds", stopIds);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore the fragment's instance
+        stopOverviewFragment = (CampusZoneStopOverview)getSupportFragmentManager().getFragment(savedInstanceState, "stopOverviewFragment");
+
+        // Restore departureInfo
+        this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
+        ArrayList<Integer> stopIds = savedInstanceState.getIntegerArrayList("stopIds");
+        for (Integer stopId : stopIds) {
+            this.departureInfo.put(stopId, savedInstanceState.<Departure>getParcelableArrayList(stopId.toString()));
+        }
+    }
 
     private Menu _menu;
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,12 +124,39 @@ public class CampusZoneActivity extends ActionBarActivity
     }
 
     private void refreshStopTimes() {
+        Log.d("CampusZoneActivity.refreshStopTimes", "Refreshing stop times.");
         new refreshStopTimeAPICaller().execute(campusZoneStops);
     }
 
     public void onStopSelected(int stopId) {
+        // Prevent launching activity before data has loaded.
+        if (departureInfo.size() < campusZoneStops.length)
+            return;
+
         // Launch activity showing detailed stop information
         Intent intent = new Intent(this, StopDetailsActivity.class);
+        switch (stopId) {
+            case 56043:
+            case 56001:
+                intent.putExtra("StationName", getResources().getString(R.string.station_name_westbank));
+                intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56043));
+                intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56001));
+                break;
+            case 56042:
+            case 56002:
+                intent.putExtra("StationName", getResources().getString(R.string.station_name_eastbank));
+                intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56042));
+                intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56002));
+                break;
+            case 56041:
+            case 56003:
+                intent.putExtra("StationName", getResources().getString(R.string.station_name_stadiumvillage));
+                intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56041));
+                intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56003));
+                break;
+            default:
+                Log.e("CampusZoneActivity.onStopSelected", "Bad stop ID selected");
+        }
         startActivity(intent);
     }
 
@@ -139,7 +177,9 @@ public class CampusZoneActivity extends ActionBarActivity
             for (Integer stopId : ids) {
                 stopIds.add(stopId);
                 try {
-                    departureInfo.put(stopId, NexTripAPI.getDepartures(stopId));
+                    ArrayList<Departure> departures = NexTripAPI.getDepartures(stopId);
+                    if (departures != null)
+                        departureInfo.put(stopId, departures);
                 } catch (Exception e) {
                     Log.e("refreshStopTimeAPICaller", "NexTripAPI threw!");
                     e.printStackTrace();
@@ -169,7 +209,8 @@ public class CampusZoneActivity extends ActionBarActivity
 
             if (stopOverviewFragment.isAdded()) {
                 for (Integer stopId : stopIds) {
-                    stopOverviewFragment.updateStopTime(stopId, departureInfo.get(stopId).get(0), null);
+                    if (departureInfo.containsKey(stopId))
+                        stopOverviewFragment.updateStopTime(stopId, departureInfo.get(stopId).get(0), null);
                 }
             }
         }

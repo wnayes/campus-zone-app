@@ -2,7 +2,22 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/CampusZoneActionBar</item>
+        <item name="actionBarStyle">@style/CampusZoneActionBar</item>
+    </style>
 
+    <!-- ActionBar styles -->
+    <style name="CampusZoneActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:backgroundStacked">@color/lineColorGreen</item>
+        <item name="backgroundStacked">@color/lineColorGreen</item>
+
+        <item name="android:actionBarTabStyle">@style/CampusZoneActionBarTabs</item>
+        <item name="actionBarTabStyle">@style/CampusZoneActionBarTabs</item>
+    </style>
+
+    <!-- ActionBar tabs styles -->
+    <style name="CampusZoneActionBarTabs" parent="@style/Widget.AppCompat.ActionBar.TabView">
+        <item name="android:background">@color/cardBackground</item>
     </style>
 
     <style name="StopCircleStyle">

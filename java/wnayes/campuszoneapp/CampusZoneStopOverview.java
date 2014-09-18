@@ -55,12 +55,24 @@ public class CampusZoneStopOverview extends Fragment {
         }
 
         // Click handlers on stop circles
-//        infLayout.findViewById(R.id.westBankStopView).setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                if (mListener != null)
-//                    mListener.onStopSelected(56043);
-//            }
-//        });
+        infLayout.findViewById(R.id.westBankStopView).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mListener != null)
+                    mListener.onStopSelected(56043);
+            }
+        });
+        infLayout.findViewById(R.id.eastBankStopView).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mListener != null)
+                    mListener.onStopSelected(56042);
+            }
+        });
+        infLayout.findViewById(R.id.stadiumVillageStopView).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mListener != null)
+                    mListener.onStopSelected(56041);
+            }
+        });
 
         return infLayout;
     }
@@ -104,7 +116,7 @@ public class CampusZoneStopOverview extends Fragment {
         if (view == null)
             view = this.getView();
 
-        String departureTime = new SimpleDateFormat("h:mm").format(departure.DepartureTime);
+        String departureTime = departure.getFormattedDepartureText();
         this.mStopTimes.put(stopId, departure);
         int resID = getResources().getIdentifier("stopTime" + Integer.toString(stopId), "id", this.getActivity().getPackageName());
         TextView stopLabel = (TextView)(view.findViewById(resID));

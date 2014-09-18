@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".StopDetailsActivity"
-            android:label="@string/title_activity_stop_details" >
+            android:label="@string/title_activity_stop_details"
+            android:parentActivityName="wnayes.campuszoneapp.CampusZoneActivity">
         </activity>
     </application>
 

@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,25 +55,43 @@ public class CampusZoneStopOverview extends Fragment {
             }
         }
 
-        // Click handlers on stop circles
-        infLayout.findViewById(R.id.westBankStopView).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mListener != null)
-                    mListener.onStopSelected(56043);
-            }
-        });
-        infLayout.findViewById(R.id.eastBankStopView).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mListener != null)
-                    mListener.onStopSelected(56042);
-            }
-        });
-        infLayout.findViewById(R.id.stadiumVillageStopView).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mListener != null)
-                    mListener.onStopSelected(56041);
-            }
-        });
+        // Setup the swipe to refresh.
+        SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout)infLayout.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener)getActivity());
+        swipeLayout.setColorSchemeColors(getResources().getColor(R.color.lineColorGreen),
+                                         getResources().getColor(R.color.cardBackground),
+                                         Color.WHITE,
+                                         getResources().getColor(R.color.cardBackground));
+
+        // Handlers for each stop.
+        StopViewClickHandler handler56043 = new StopViewClickHandler(56043); // WB westbound
+        StopViewClickHandler handler56042 = new StopViewClickHandler(56042); // EB westbound
+        StopViewClickHandler handler56041 = new StopViewClickHandler(56041); // SV westbound
+        StopViewClickHandler handler56001 = new StopViewClickHandler(56001); // WB eastbound
+        StopViewClickHandler handler56002 = new StopViewClickHandler(56002); // EB eastbound
+        StopViewClickHandler handler56003 = new StopViewClickHandler(56003); // SV eastbound
+
+        // Click handlers on stop circles (default to westbound stop)
+        infLayout.findViewById(R.id.westBankStopView).setOnClickListener(handler56043);
+        infLayout.findViewById(R.id.eastBankStopView).setOnClickListener(handler56042);
+        infLayout.findViewById(R.id.stadiumVillageStopView).setOnClickListener(handler56041);
+
+        infLayout.findViewById(R.id.stopDesc56043).setOnClickListener(handler56043);
+        infLayout.findViewById(R.id.stopDesc56042).setOnClickListener(handler56042);
+        infLayout.findViewById(R.id.stopDesc56041).setOnClickListener(handler56041);
+        infLayout.findViewById(R.id.stopDesc56001).setOnClickListener(handler56001);
+        infLayout.findViewById(R.id.stopDesc56002).setOnClickListener(handler56002);
+        infLayout.findViewById(R.id.stopDesc56003).setOnClickListener(handler56003);
+
+        infLayout.findViewById(R.id.stopTime56043).setOnClickListener(handler56043);
+        infLayout.findViewById(R.id.stopTime56042).setOnClickListener(handler56042);
+        infLayout.findViewById(R.id.stopTime56041).setOnClickListener(handler56041);
+        infLayout.findViewById(R.id.stopTime56001).setOnClickListener(handler56001);
+        infLayout.findViewById(R.id.stopTime56002).setOnClickListener(handler56002);
+        infLayout.findViewById(R.id.stopTime56003).setOnClickListener(handler56003);
+
+        if (mListener != null)
+            mListener.onCreatedView();
 
         return infLayout;
     }
@@ -139,6 +158,7 @@ public class CampusZoneStopOverview extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface StopOverviewFragmentListener {
+        public void onCreatedView();
         public void onStopSelected(int stopId);
     }
 
@@ -181,6 +201,19 @@ public class CampusZoneStopOverview extends Fragment {
             paint.setTextSize(scaledSize);
             canvas.drawText(stopName[0], x / 2, y / 2 - paint.descent(), paint);
             canvas.drawText(stopName[1], x / 2, y / 2 - paint.ascent(), paint);
+        }
+    }
+
+    public class StopViewClickHandler implements View.OnClickListener {
+        private int stopId;
+
+        public StopViewClickHandler(int stopId) {
+            this.stopId = stopId;
+        }
+
+        public void onClick(View v) {
+            if (mListener != null)
+                mListener.onStopSelected(this.stopId);
         }
     }
 }

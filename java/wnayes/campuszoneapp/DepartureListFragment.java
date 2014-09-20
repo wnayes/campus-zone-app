@@ -11,13 +11,16 @@ import java.util.ArrayList;
 public class DepartureListFragment extends ListFragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_STOPID = "stopId";
     private static final String ARG_DEPARTURES = "departures";
 
+    private int mStopId;
     private ArrayList<Departure> mDepartures;
 
-    public static DepartureListFragment newInstance(ArrayList<Departure> departures) {
+    public static DepartureListFragment newInstance(int stopId, ArrayList<Departure> departures) {
         DepartureListFragment fragment = new DepartureListFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_STOPID, stopId);
         args.putParcelableArrayList(ARG_DEPARTURES, departures);
         fragment.setArguments(args);
         return fragment;
@@ -34,6 +37,7 @@ public class DepartureListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
+            mStopId = getArguments().getInt(ARG_STOPID);
             mDepartures = getArguments().getParcelableArrayList(ARG_DEPARTURES);
         }
 

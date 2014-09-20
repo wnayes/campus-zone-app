@@ -38,6 +38,9 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
      */
     ViewPager mViewPager;
 
+    int mStartingStopId;
+    int mWestboundStopId;
+    int mEastboundStopId;
     String stationName;
     ArrayList<Departure> westboundDepartures;
     ArrayList<Departure> eastboundDepartures;
@@ -50,10 +53,16 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
         // Read intent data
         if (savedInstanceState == null) {
             Intent intent = getIntent();
+            mWestboundStopId = intent.getIntExtra("WestboundStopId", 0);
+            mEastboundStopId = intent.getIntExtra("EastboundStopId", 0);
+            mStartingStopId = intent.getIntExtra("StartingStopId", 0);
             stationName = intent.getStringExtra("StationName");
             westboundDepartures = intent.getParcelableArrayListExtra("WestboundDepartures");
             eastboundDepartures = intent.getParcelableArrayListExtra("EastboundDepartures");
         } else {
+            mWestboundStopId = savedInstanceState.getInt("WestboundStopId");
+            mEastboundStopId = savedInstanceState.getInt("EastboundStopId");
+            mStartingStopId = savedInstanceState.getInt("StartingStopId");
             stationName = savedInstanceState.getString("StationName");
             westboundDepartures = savedInstanceState.getParcelableArrayList("WestboundDepartures");
             eastboundDepartures = savedInstanceState.getParcelableArrayList("EastboundDepartures");
@@ -92,12 +101,19 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
                                       .setText(mSectionsPagerAdapter.getPageTitle(i))
                                       .setTabListener(this));
         }
+
+        // Switch to eastbound tab based on the stop number.
+        if (mStartingStopId == mEastboundStopId)
+            mViewPager.setCurrentItem(1);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
+        savedInstanceState.putInt("WestboundStopId", mWestboundStopId);
+        savedInstanceState.putInt("EastboundStopId", mEastboundStopId);
+        savedInstanceState.putInt("StartingStopId", mStartingStopId);
         savedInstanceState.putString("StationName", stationName);
         savedInstanceState.putParcelableArrayList("WestboundDepartures", westboundDepartures);
         savedInstanceState.putParcelableArrayList("EastboundDepartures", eastboundDepartures);
@@ -150,8 +166,8 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
         @Override
         public Fragment getItem(int position) {
             if (position == 0)
-                return DepartureListFragment.newInstance(westboundDepartures);
-            return DepartureListFragment.newInstance(eastboundDepartures);
+                return DepartureListFragment.newInstance(mWestboundStopId, westboundDepartures);
+            return DepartureListFragment.newInstance(mEastboundStopId, eastboundDepartures);
         }
 
         @Override

@@ -1,9 +1,12 @@
 package wnayes.campuszoneapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -16,18 +19,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.view.Window;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 
 public class CampusZoneActivity extends ActionBarActivity
-       implements CampusZoneStopOverview.StopOverviewFragmentListener {
+       implements CampusZoneStopOverview.StopOverviewFragmentListener,
+                  SwipeRefreshLayout.OnRefreshListener {
 
     private CampusZoneStopOverview stopOverviewFragment;
+
+    // SharedPreferences file names.
+    private static String SETTINGS_STOP_DATA = "SERIALIZED_STOPS";
+    private static String SETTINGS_GENERAL = "SETTINGS_GENERAL";
+
+    // Initial refresh should happen only once the actionbar is ready and the
+    // child fragment has loaded its view.
+    private boolean refreshCheck_onCreateOptionsMenu = false;
+    private boolean refreshCheck_FragmentonCreateView = false;
+    private boolean refreshCheck_done = false;
 
     /** Storage for the latest sets of departure info, accessed via stop id. */
     private HashMap<Integer, ArrayList<Departure>> departureInfo;
@@ -45,7 +65,13 @@ public class CampusZoneActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus_zone);
 
-        this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
+        // Show the last refresh time text.
+        SharedPreferences settings = getSharedPreferences(SETTINGS_GENERAL, 0);
+        if (settings.contains("LastRefresh")) {
+            Date lastRefresh = new Date(settings.getLong("LastRefresh", 0));
+            if (lastRefresh.getTime() > 0)
+                this.updateRefreshLabel(lastRefresh);
+        }
 
         // Setup the activity when new. See onRestoreInstanceState for configuration changes.
         if (savedInstanceState == null) {
@@ -53,14 +79,51 @@ public class CampusZoneActivity extends ActionBarActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, stopOverviewFragment)
                     .commit();
+
+            this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
+        } else {
+            stopOverviewFragment = (CampusZoneStopOverview)getSupportFragmentManager().getFragment(savedInstanceState, "stopOverviewFragment");
         }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (this.departureInfo == null || this.departureInfo.size() < campusZoneStops.length)
-            this.refreshStopTimes();
+    protected void onStop() {
+        super.onStop();
+
+        SharedPreferences.Editor settings = getSharedPreferences(SETTINGS_STOP_DATA, 0).edit();
+        settings.clear();
+        Iterator it = this.departureInfo.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            settings.putString(pairs.getKey().toString(), Departure.createList((ArrayList<Departure>)pairs.getValue()).toString());
+            it.remove();
+        }
+        settings.apply();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (this.departureInfo == null)
+            this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
+
+        SharedPreferences settings = getSharedPreferences(SETTINGS_STOP_DATA, 0);
+        for (int stopId : CampusZoneActivity.campusZoneStops) {
+            if (!settings.contains(Integer.toString(stopId)))
+                continue;
+            String jsonArray = settings.getString(Integer.toString(stopId), "[]");
+            JSONArray arr;
+            try {
+                arr = new JSONArray(jsonArray);
+            } catch (JSONException jse) {
+                jse.printStackTrace();
+                continue;
+            }
+            ArrayList<Departure> list = Departure.parseList(arr);
+            this.departureInfo.put(stopId, list);
+            stopOverviewFragment.updateStopTime(stopId, list.get(0), null);
+        }
     }
 
     @Override
@@ -70,16 +133,10 @@ public class CampusZoneActivity extends ActionBarActivity
         // Save the fragment's instance
         getSupportFragmentManager().putFragment(savedInstanceState, "stopOverviewFragment", stopOverviewFragment);
 
-        // Save stop information.
-        Iterator it = this.departureInfo.entrySet().iterator();
-        ArrayList<Integer> stopIds = new ArrayList<Integer>();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            stopIds.add((Integer)pairs.getKey());
-            savedInstanceState.putParcelableArrayList(pairs.getKey().toString(), (ArrayList<Departure>)pairs.getValue());
-            it.remove();
-        }
-        savedInstanceState.putIntegerArrayList("stopIds", stopIds);
+        // Save initial refresh state info
+        savedInstanceState.putBoolean("refreshCheck_done", this.refreshCheck_done);
+        savedInstanceState.putBoolean("refreshCheck_FragmentonCreateView", this.refreshCheck_FragmentonCreateView);
+        savedInstanceState.putBoolean("refreshCheck_onCreateOptionsMenu", this.refreshCheck_onCreateOptionsMenu);
     }
 
     @Override
@@ -87,14 +144,12 @@ public class CampusZoneActivity extends ActionBarActivity
         super.onRestoreInstanceState(savedInstanceState);
 
         // Restore the fragment's instance
-        stopOverviewFragment = (CampusZoneStopOverview)getSupportFragmentManager().getFragment(savedInstanceState, "stopOverviewFragment");
+        // stopOverviewFragment = (CampusZoneStopOverview)getSupportFragmentManager().getFragment(savedInstanceState, "stopOverviewFragment");
 
-        // Restore departureInfo
-        this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
-        ArrayList<Integer> stopIds = savedInstanceState.getIntegerArrayList("stopIds");
-        for (Integer stopId : stopIds) {
-            this.departureInfo.put(stopId, savedInstanceState.<Departure>getParcelableArrayList(stopId.toString()));
-        }
+        // Restore refresh check info
+        this.refreshCheck_done = savedInstanceState.getBoolean("refreshCheck_done");
+        this.refreshCheck_FragmentonCreateView = savedInstanceState.getBoolean("refreshCheck_FragmentonCreateView");
+        this.refreshCheck_onCreateOptionsMenu = savedInstanceState.getBoolean("refreshCheck_onCreateOptionsMenu");
     }
 
     private Menu _menu;
@@ -107,6 +162,11 @@ public class CampusZoneActivity extends ActionBarActivity
 
         // Keep a reference to the menu for later uses (refresh indicator change).
         this._menu = menu;
+
+        if (!this.refreshCheck_done) {
+            this.refreshCheck_onCreateOptionsMenu = true;
+            this.refreshCheck();
+        }
         return true;
     }
 
@@ -117,15 +177,27 @@ public class CampusZoneActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.menu_refresh_event) {
-            this.refreshStopTimes();
+            this.onRefresh();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void refreshStopTimes() {
-        Log.d("CampusZoneActivity.refreshStopTimes", "Refreshing stop times.");
-        new refreshStopTimeAPICaller().execute(campusZoneStops);
+    private void updateRefreshLabel(Date refreshDate) {
+        Date now = new Date();
+        String label = getString(R.string.last_refresh);
+        if (now.getTime() - refreshDate.getTime() > 86400000) { // 1+ days since refresh
+            label += " on " + new SimpleDateFormat("EEE, MMM d, ''yy").format(refreshDate);
+        } else {
+            label += " at " + new SimpleDateFormat("h:mma").format(refreshDate);
+        }
+        getSupportActionBar().setSubtitle(label);
+    }
+
+    @Override
+    public void onCreatedView() {
+        this.refreshCheck_FragmentonCreateView = true;
+        this.refreshCheck();
     }
 
     public void onStopSelected(int stopId) {
@@ -135,21 +207,28 @@ public class CampusZoneActivity extends ActionBarActivity
 
         // Launch activity showing detailed stop information
         Intent intent = new Intent(this, StopDetailsActivity.class);
+        intent.putExtra("StartingStopId", stopId);
         switch (stopId) {
             case 56043:
             case 56001:
+                intent.putExtra("WestboundStopId", 56043);
+                intent.putExtra("EastboundStopId", 56001);
                 intent.putExtra("StationName", getResources().getString(R.string.station_name_westbank));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56043));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56001));
                 break;
             case 56042:
             case 56002:
+                intent.putExtra("WestboundStopId", 56042);
+                intent.putExtra("EastboundStopId", 56002);
                 intent.putExtra("StationName", getResources().getString(R.string.station_name_eastbank));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56042));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56002));
                 break;
             case 56041:
             case 56003:
+                intent.putExtra("WestboundStopId", 56041);
+                intent.putExtra("EastboundStopId", 56003);
                 intent.putExtra("StationName", getResources().getString(R.string.station_name_stadiumvillage));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56041));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56003));
@@ -158,6 +237,23 @@ public class CampusZoneActivity extends ActionBarActivity
                 Log.e("CampusZoneActivity.onStopSelected", "Bad stop ID selected");
         }
         startActivity(intent);
+    }
+
+    private void refreshCheck() {
+        if (this.refreshCheck_done)
+            return;
+        if (this.refreshCheck_FragmentonCreateView && this.refreshCheck_onCreateOptionsMenu) {
+            this.onRefresh();
+            this.refreshCheck_done = true;
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        Log.d("CampusZoneActivity.onRefresh", "Refreshing stop times.");
+        ((SwipeRefreshLayout)stopOverviewFragment.getView().findViewById(R.id.swipe_container))
+                .setRefreshing(true);
+        new refreshStopTimeAPICaller().execute(campusZoneStops);
     }
 
     private class refreshStopTimeAPICaller extends AsyncTask<Integer, Void, ArrayList<Integer>> {
@@ -175,11 +271,12 @@ public class CampusZoneActivity extends ActionBarActivity
         protected ArrayList<Integer> doInBackground(Integer... ids) {
             ArrayList<Integer> stopIds = new ArrayList<Integer>(ids.length);
             for (Integer stopId : ids) {
-                stopIds.add(stopId);
                 try {
                     ArrayList<Departure> departures = NexTripAPI.getDepartures(stopId);
-                    if (departures != null)
+                    if (departures != null && departures.size() > 0) {
                         departureInfo.put(stopId, departures);
+                        stopIds.add(stopId);
+                    }
                 } catch (Exception e) {
                     Log.e("refreshStopTimeAPICaller", "NexTripAPI threw!");
                     e.printStackTrace();
@@ -195,6 +292,11 @@ public class CampusZoneActivity extends ActionBarActivity
                 MenuItemCompat.setActionView(refreshItem, null);
             refreshItem = null;
 
+            if (stopOverviewFragment.isAdded()) {
+                ((SwipeRefreshLayout)stopOverviewFragment.getView().findViewById(R.id.swipe_container))
+                        .setRefreshing(false);
+            }
+
             // If the event can't be found, no UI refresh should occur.
             if (stopIds.size() == 0) {
                 Toast.makeText(getApplicationContext(),
@@ -202,6 +304,12 @@ public class CampusZoneActivity extends ActionBarActivity
                         Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // Remember the last time a refresh occurred.
+            SharedPreferences.Editor settings = getSharedPreferences(SETTINGS_GENERAL, 0).edit();
+            settings.putLong("LastRefresh", new Date().getTime());
+            updateRefreshLabel(new Date());
+            settings.apply();
 
             // Invalidate the options menu to account for any needed visibility changes.
             if (!ActivityCompat.invalidateOptionsMenu(CampusZoneActivity.this))

@@ -12,7 +12,7 @@
     <string name="predicted">Predicted</string>
     <string name="scheduled">Scheduled</string>
     <string name="title_activity_stop_details">Departures</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="last_refresh">Last refresh</string>
     <string name="action_settings">Settings</string>
 
 </resources>

@@ -2,8 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/cardBackground"
+    android:background="@color/campusZoneTanBackground"
     tools:context="wnayes.campuszoneapp.CampusZoneStopOverview">
+
+<!-- Green line showing during the refresh drag. -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/GreenLineView" />
+    <ImageView
+        android:src="@drawable/refresh"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
+
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/cardBackground">
 
     <!-- Eastbound/Westbound labeling -->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,10 +53,7 @@
 
     <!-- The literal "green line" -->
     <View xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/lineColorGreen"
-        android:layout_width="50dp"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true"/>
+        style="@style/GreenLineView"/>
 
     <!-- The station stop circles -->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -121,4 +145,5 @@
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
-
+</android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

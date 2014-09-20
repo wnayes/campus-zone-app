@@ -35,9 +35,7 @@ public class NexTripAPI {
         // Parse the stop times and grab the latest one.
         try {
             JSONArray stopsArray = new JSONArray(client.getResponse());
-            ArrayList<Departure> departures = new ArrayList<Departure>();
-            for (int i = 0; i < stopsArray.length(); ++i)
-                departures.add(new Departure(stopsArray.getJSONObject(i)));
+            ArrayList<Departure> departures = Departure.parseList(stopsArray);
             return departures;
         } catch (JSONException e) {
             Log.e(NexTripAPI.class.toString(), "Error parsing stop array");

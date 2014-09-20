@@ -1,3 +1,10 @@
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardBackground">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -6,10 +13,7 @@
     tools:context="wnayes.campuszoneapp.CampusZoneStopOverview">
 
     <View xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/lineColorGreen"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"/>
+        style="@style/GreenLineViewLand"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -113,3 +117,4 @@
     </LinearLayout>
 </RelativeLayout>
 
+</android.support.v4.widget.SwipeRefreshLayout>

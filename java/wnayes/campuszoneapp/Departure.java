@@ -4,10 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -120,8 +122,49 @@ public class Departure implements Parcelable {
         this.DepartureTime = new Date(millis + timeZoneOffSet);
     }
 
-    String getFormattedDepartureText() {
+    public JSONObject toJSON() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("Actual", this.Actual);
+            obj.put("BlockNumber", this.BlockNumber);
+            obj.put("DepartureText", this.DepartureText);
+            obj.put("DepartureTime", "Date(" + this.DepartureTime.getTime() + ")");
+            obj.put("Description", this.Description);
+            obj.put("Gate", this.Gate);
+            obj.put("Route", this.Route);
+            obj.put("RouteDirection", this.RouteDirection.name());
+            obj.put("Terminal", this.Terminal);
+            obj.put("VehicleHeading", this.VehicleHeading);
+            obj.put("VehicleLatitude", this.VehicleLatitude);
+            obj.put("VehicleLongitude", this.VehicleLongitude);
+        } catch (JSONException jse) {
+            Log.e("Departure.toJSON", "Could not serialize Departure into JSON!");
+            jse.printStackTrace();
+        }
+        return obj;
+    }
+
+    public String getFormattedDepartureText() {
         return new SimpleDateFormat("h:mm").format(this.DepartureTime);
+    }
+
+    public static ArrayList<Departure> parseList(JSONArray list) {
+        ArrayList<Departure> departures = new ArrayList<Departure>();
+        try {
+            for (int i = 0; i < list.length(); ++i)
+                departures.add(new Departure(list.getJSONObject(i)));
+        } catch (JSONException jse) {
+            jse.printStackTrace();
+        }
+        return departures;
+    }
+
+    public static JSONArray createList(ArrayList<Departure> departures) {
+        JSONArray list = new JSONArray();
+        for (Departure d : departures) {
+            list.put(d.toJSON());
+        }
+        return list;
     }
 
     // Parcelable implementation

@@ -56,7 +56,7 @@
                 style="@style/DepartureTimeLandContainer"
                 android:layout_alignParentTop="true">
                 <TextView android:id="@+id/stopDesc56043"
-                    style="@style/DepartureTimeDesc"/>
+                    style="@style/DepartureTimeDesc" />
                 <TextView android:id="@+id/stopTime56043"
                     android:text="@string/empty_time"
                     style="@style/DepartureTimeText"/>

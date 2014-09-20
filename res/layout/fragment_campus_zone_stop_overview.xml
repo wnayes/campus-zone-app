@@ -35,7 +35,7 @@
     <!-- Eastbound/Westbound labeling -->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="20dp"
+        android:layout_height="@dimen/route_direction_area_height"
         android:layout_alignParentTop="true"
         android:background="@color/campusZoneTanBackground"
         android:gravity="center">
@@ -44,8 +44,8 @@
             style="@style/RouteDirectionLabel"/>
         <!-- Spacer underneath the literal green line to help center east and westbound labels.-->
         <View xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="50dp"
-            android:layout_height="20dp"/>
+            android:layout_width="@dimen/green_line_width"
+            android:layout_height="@dimen/route_direction_area_height"/>
         <TextView
             android:text="@string/westbound"
             style="@style/RouteDirectionLabel"/>

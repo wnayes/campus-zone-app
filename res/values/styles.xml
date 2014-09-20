@@ -21,15 +21,15 @@
     </style>
 
     <style name="StopCircleStyle">
-        <item name="android:layout_width">125dp</item>
-        <item name="android:layout_height">125dp</item>
-        <item name="android:height">125dp</item>
+        <item name="android:layout_width">@dimen/stop_circle_diameter</item>
+        <item name="android:layout_height">@dimen/stop_circle_diameter</item>
+        <item name="android:height">@dimen/stop_circle_diameter</item>
         <item name="android:layout_weight">0.33</item>
     </style>
 
     <style name="RouteDirectionLabel">
         <item name="android:textColor">@color/campusZoneTanForeground</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/route_direction_fontsize</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0.5</item>
@@ -37,24 +37,24 @@
     </style>
 
     <style name="DepartureTimeText">
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">@dimen/departure_time_fontsize</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">-8dp</item>
+        <item name="android:layout_marginTop">@dimen/departure_time_marginDecrease</item>
     </style>
     <style name="DepartureTimeTextLeft" parent="DepartureTimeText">
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginLeft">@dimen/departure_time_leftrightMargin</item>
         <item name="android:layout_alignParentLeft">true</item>
     </style>
     <style name="DepartureTimeTextRight" parent="DepartureTimeText">
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginRight">@dimen/departure_time_leftrightMargin</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
     <style name="DepartureTimeLandContainer">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_margin">@dimen/departure_time_landMargin</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
     </style>
@@ -63,20 +63,20 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginLeft">@dimen/departure_time_leftrightMargin</item>
+        <item name="android:layout_marginRight">@dimen/departure_time_leftrightMargin</item>
+        <item name="android:textSize">@dimen/departure_time_desc_fontsize</item>
     </style>
 
     <style name="GreenLineView">
         <item name="android:background">@color/lineColorGreen</item>
-        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_width">@dimen/green_line_width</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
     <style name="GreenLineViewLand" parent="GreenLineView">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">@dimen/green_line_width</item>
     </style>
 
 </resources>

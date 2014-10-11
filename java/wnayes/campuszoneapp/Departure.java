@@ -73,6 +73,10 @@ public class Departure implements Parcelable {
             Log.e("Departure.Direction.fromString", "Unknown Direction string value");
             return UNKNOWN;
         }
+
+        public int getValue() {
+            return this.value;
+        }
     }
     public Direction RouteDirection;
 

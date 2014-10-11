@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".CampusZoneActivity" >
 
+    <!-- List of all stations -->
+    <item
+        android:icon="@drawable/station_list"
+        android:title="@string/action_allstations"
+        yourapp:showAsAction="ifRoom"
+        yourapp:actionProviderClass="wnayes.campuszoneapp.StationActionProvider" />
+
     <!-- Refresh stop time information. -->
     <item android:id="@+id/menu_refresh_event"
         android:icon="@drawable/refresh"

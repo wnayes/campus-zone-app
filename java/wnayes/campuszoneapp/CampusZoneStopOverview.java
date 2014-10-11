@@ -183,6 +183,7 @@ public class CampusZoneStopOverview extends Fragment {
             int y = getHeight();
             int radius = Math.min(x, y) / 2;
             Paint paint = new Paint();
+            paint.setAntiAlias(true);
 
             // Draw the circles
             paint.setColor(getResources().getColor(R.color.lineColorGreen));
@@ -193,7 +194,6 @@ public class CampusZoneStopOverview extends Fragment {
             // Draw the stop name TODO: more than 2 lines of stop name?
             paint.setColor(Color.BLACK);
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setAntiAlias(true);
             int scaledSize = getResources().getDimensionPixelSize(R.dimen.stop_circle_fontsize);
             paint.setTextSize(scaledSize);
             canvas.drawText(stopName[0], x / 2, y / 2 - paint.descent(), paint);

@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Campus Zone App</string>
+    <string name="title_activity_stop_details">Departures</string>
+
     <string name="action_refresh">Refresh</string>
+    <string name="last_refresh">Last refresh</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_allstations">All Stations</string>
+
     <string name="empty_time">--:--</string>
+
+    <string name="station_name_warehousehennepin">Warehouse/Hennepin Ave</string>
+    <string name="station_name_nicollet">Nicollet Mall</string>
+    <string name="station_name_governmentplaza">Government Plaza</string>
+    <string name="station_name_downtowneast">Downtown East</string>
     <string name="station_name_eastbank">East Bank</string>
     <string name="station_name_westbank">West Bank</string>
     <string name="station_name_stadiumvillage">Stadium Village</string>
+    <string name="station_name_prospectpark">Prospect Park</string>
+    <string name="station_name_westgate">Westgate</string>
+    <string name="station_name_raymond">Raymond Ave</string>
+    <string name="station_name_fairview">Fairview Ave</string>
+    <string name="station_name_snelling">Snelling Ave</string>
+    <string name="station_name_hamline">Hamline Ave</string>
+    <string name="station_name_lexington">Lexington Pkwy</string>
+    <string name="station_name_victoria">Victoria St</string>
+    <string name="station_name_dale">Dale St</string>
+    <string name="station_name_western">Western Ave</string>
+    <string name="station_name_capitolrice">Capitol/Rice St</string>
+    <string name="station_name_robert">Robert St</string>
+    <string name="station_name_10th">10th St</string>
+    <string name="station_name_central">Central</string>
+    <string name="station_name_uniondept">Union Depot</string>
+
     <string name="westbound">Westbound</string>
     <string name="eastbound">Eastbound</string>
+
     <string name="predicted">Predicted</string>
     <string name="scheduled">Scheduled</string>
-    <string name="title_activity_stop_details">Departures</string>
-    <string name="last_refresh">Last refresh</string>
-    <string name="action_settings">Settings</string>
-
 </resources>

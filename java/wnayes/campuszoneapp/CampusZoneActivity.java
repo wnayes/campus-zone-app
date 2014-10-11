@@ -19,6 +19,7 @@ import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -176,9 +177,12 @@ public class CampusZoneActivity extends ActionBarActivity
     }
 
     private void updateRefreshLabel(Date refreshDate) {
-        Date now = new Date();
+        Calendar now = Calendar.getInstance();
+        Calendar refreshCal = Calendar.getInstance();
+        refreshCal.setTime(refreshDate);
         String label = getString(R.string.last_refresh);
-        if (now.getTime() - refreshDate.getTime() > 86400000) { // 1+ days since refresh
+        if (now.get(Calendar.DAY_OF_YEAR) != refreshCal.get(Calendar.DAY_OF_YEAR) &&
+            now.get(Calendar.YEAR) != refreshCal.get(Calendar.YEAR)) {
             label += " on " + new SimpleDateFormat("EEE, MMM d, ''yy").format(refreshDate);
         } else {
             label += " at " + new SimpleDateFormat("h:mma").format(refreshDate);
@@ -199,29 +203,26 @@ public class CampusZoneActivity extends ActionBarActivity
 
         // Launch activity showing detailed stop information
         Intent intent = new Intent(this, StopDetailsActivity.class);
-        intent.putExtra("StartingStopId", stopId);
+        intent.putExtra("StartingDirection", Departure.Direction.EASTBOUND.getValue());
         switch (stopId) {
             case 56043:
+                intent.putExtra("StartingDirection", Departure.Direction.WESTBOUND.getValue());
             case 56001:
-                intent.putExtra("WestboundStopId", 56043);
-                intent.putExtra("EastboundStopId", 56001);
-                intent.putExtra("StationName", getResources().getString(R.string.station_name_westbank));
+                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(4));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56043));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56001));
                 break;
             case 56042:
+                intent.putExtra("StartingDirection", Departure.Direction.WESTBOUND.getValue());
             case 56002:
-                intent.putExtra("WestboundStopId", 56042);
-                intent.putExtra("EastboundStopId", 56002);
-                intent.putExtra("StationName", getResources().getString(R.string.station_name_eastbank));
+                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(5));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56042));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56002));
                 break;
             case 56041:
+                intent.putExtra("StartingDirection", Departure.Direction.WESTBOUND.getValue());
             case 56003:
-                intent.putExtra("WestboundStopId", 56041);
-                intent.putExtra("EastboundStopId", 56003);
-                intent.putExtra("StationName", getResources().getString(R.string.station_name_stadiumvillage));
+                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(6));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56041));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56003));
                 break;

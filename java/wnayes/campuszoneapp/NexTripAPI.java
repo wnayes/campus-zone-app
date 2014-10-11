@@ -10,8 +10,18 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 public class NexTripAPI {
+    public static ArrayList<Departure> getDepartures(LRTStation station, Departure.Direction direction) throws SocketTimeoutException, ConnectTimeoutException {
+        String url = String.format("http://svc.metrotransit.org/NexTrip/902/%d/%s?format=json",
+                     direction.getValue(), station.getAbbreviation());
+        return getDepartures(url);
+    }
+
     public static ArrayList<Departure> getDepartures(int stopId) throws SocketTimeoutException, ConnectTimeoutException {
-        String url = "http://svc.metrotransit.org/NexTrip/" + Integer.toString(stopId) + "?format=json";
+        String url = String.format("http://svc.metrotransit.org/NexTrip/%d?format=json", stopId);
+        return getDepartures(url);
+    }
+
+    private static ArrayList<Departure> getDepartures(String url) throws SocketTimeoutException, ConnectTimeoutException {
         RestClient client = new RestClient(url);
 
         // Prevent the search from stalling indefinitely.
@@ -29,13 +39,12 @@ public class NexTripAPI {
             e.printStackTrace();
             return null;
         }
-        Log.d("NexTripAPI.getDepartures", (client.getResponse() == null) ? "" : client.getResponse());
+        Log.d("NexTripAPI.getDepartures", url + ": " + ((client.getResponse() == null) ? "" : client.getResponse()));
 
         // Parse the stop times and grab the latest one.
         try {
             JSONArray stopsArray = new JSONArray(client.getResponse());
-            ArrayList<Departure> departures = Departure.parseList(stopsArray);
-            return departures;
+            return Departure.parseList(stopsArray);
         } catch (JSONException e) {
             Log.e(NexTripAPI.class.toString(), "Error parsing stop array");
             e.printStackTrace();

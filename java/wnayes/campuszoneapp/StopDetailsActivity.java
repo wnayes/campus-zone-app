@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -13,53 +14,53 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import wnayes.campuszoneapp.Departure.Direction;
 
 
 public class StopDetailsActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * fragments for each of the sections.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    DepartureListPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    /** The {@link ViewPager} that will host the section contents. */
     ViewPager mViewPager;
 
-    int mStartingStopId;
-    int mWestboundStopId;
-    int mEastboundStopId;
-    String stationName;
+    LRTStation station;
     ArrayList<Departure> westboundDepartures;
     ArrayList<Departure> eastboundDepartures;
+    Direction startingDirection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_details);
 
-        // Read intent data
+        // Read station information from intent.
         if (savedInstanceState == null) {
             Intent intent = getIntent();
-            mWestboundStopId = intent.getIntExtra("WestboundStopId", 0);
-            mEastboundStopId = intent.getIntExtra("EastboundStopId", 0);
-            mStartingStopId = intent.getIntExtra("StartingStopId", 0);
-            stationName = intent.getStringExtra("StationName");
-            westboundDepartures = intent.getParcelableArrayListExtra("WestboundDepartures");
-            eastboundDepartures = intent.getParcelableArrayListExtra("EastboundDepartures");
+            this.station = intent.getParcelableExtra("LRTStation");
+            this.startingDirection =
+                 Direction.fromValue(intent.getIntExtra("StartingDirection", Direction.WESTBOUND.getValue()));
+            if (intent.hasExtra("WestboundDepartures") && intent.hasExtra("EastboundDepartures")) {
+                this.westboundDepartures = intent.getParcelableArrayListExtra("WestboundDepartures");
+                this.eastboundDepartures = intent.getParcelableArrayListExtra("EastboundDepartures");
+            } else {
+                new refreshStationTimeAPICaller().execute(this.station);
+            }
+
         } else {
-            mWestboundStopId = savedInstanceState.getInt("WestboundStopId");
-            mEastboundStopId = savedInstanceState.getInt("EastboundStopId");
-            mStartingStopId = savedInstanceState.getInt("StartingStopId");
-            stationName = savedInstanceState.getString("StationName");
+            this.startingDirection = Direction.fromValue(savedInstanceState.getInt("StartingDirection"));
+            this.station = savedInstanceState.getParcelable("LRTStation");
             westboundDepartures = savedInstanceState.getParcelableArrayList("WestboundDepartures");
             eastboundDepartures = savedInstanceState.getParcelableArrayList("EastboundDepartures");
         }
@@ -68,11 +69,11 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setTitle(stationName + " Departures");
+        actionBar.setTitle(this.station.getStationName() + " Departures");
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new DepartureListPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager)findViewById(R.id.pager);
@@ -94,13 +95,12 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
             // the adapter. Also specify this Activity object, which implements
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
-            actionBar.addTab(actionBar.newTab()
-                                      .setText(mSectionsPagerAdapter.getPageTitle(i))
-                                      .setTabListener(this));
+            actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i))
+                                               .setTabListener(this));
         }
 
         // Switch to eastbound tab based on the stop number.
-        if (mStartingStopId == mEastboundStopId)
+        if (this.startingDirection == Direction.EASTBOUND)
             mViewPager.setCurrentItem(1);
     }
 
@@ -108,10 +108,8 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putInt("WestboundStopId", mWestboundStopId);
-        savedInstanceState.putInt("EastboundStopId", mEastboundStopId);
-        savedInstanceState.putInt("StartingStopId", mStartingStopId);
-        savedInstanceState.putString("StationName", stationName);
+        savedInstanceState.putInt("StartingDirection", this.startingDirection.getValue());
+        savedInstanceState.putParcelable("LRTStation", this.station);
         savedInstanceState.putParcelableArrayList("WestboundDepartures", westboundDepartures);
         savedInstanceState.putParcelableArrayList("EastboundDepartures", eastboundDepartures);
     }
@@ -138,34 +136,45 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
+        // When the given tab is selected, switch to the corresponding page in the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    /** A {@link FragmentPagerAdapter} that returns a fragment corresponding to a direction. */
+    public class DepartureListPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        public DepartureListPagerAdapter(FragmentManager fm) {
             super(fm);
+            map = new SparseArray<DepartureListFragment>(2);
+        }
+
+        private SparseArray<DepartureListFragment> map;
+
+        public DepartureListFragment getFragment(int position) {
+            return map.get(position);
         }
 
         @Override
         public Fragment getItem(int position) {
+            DepartureListFragment newFragment;
             if (position == 0)
-                return DepartureListFragment.newInstance(mWestboundStopId, westboundDepartures);
-            return DepartureListFragment.newInstance(mEastboundStopId, eastboundDepartures);
+                newFragment = DepartureListFragment.newInstance(station, Direction.WESTBOUND, westboundDepartures);
+            else
+                newFragment = DepartureListFragment.newInstance(station, Direction.EASTBOUND, eastboundDepartures);
+            map.put(position, newFragment);
+            return newFragment;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            map.remove(position);
+            super.destroyItem(container, position, object);
         }
 
         @Override
@@ -186,6 +195,38 @@ public class StopDetailsActivity extends ActionBarActivity implements ActionBar.
         }
     }
 
+    private class refreshStationTimeAPICaller extends AsyncTask<LRTStation, Void, ArrayList<ArrayList<Departure>>> {
+        protected void onPreExecute() {
 
+        }
 
+        protected ArrayList<ArrayList<Departure>> doInBackground(LRTStation... stations) {
+            ArrayList<ArrayList<Departure>> departures = new ArrayList<ArrayList<Departure>>(2);
+            try {
+                departures.add(NexTripAPI.getDepartures(stations[0], Departure.Direction.WESTBOUND));
+                departures.add(NexTripAPI.getDepartures(stations[0], Departure.Direction.EASTBOUND));
+            } catch (Exception e) {
+                Log.e(this.getClass().getSimpleName(), "NexTripAPI threw!");
+                e.printStackTrace();
+            }
+
+            return departures;
+        }
+
+        protected void onPostExecute(ArrayList<ArrayList<Departure>> departures) {
+            if (departures.size() != 2 || departures.get(0) == null || departures.get(1) == null) {
+                Log.e(this.getClass().getSimpleName(), "Could not download W/E departures");
+                Toast.makeText(getApplicationContext(), "Could not download station info. Check internet?",
+                               Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            westboundDepartures = departures.get(0);
+            eastboundDepartures = departures.get(1);
+
+            DepartureListPagerAdapter adapter = (DepartureListPagerAdapter)mViewPager.getAdapter();
+            adapter.getFragment(0).updateDepartureList(westboundDepartures);
+            adapter.getFragment(1).updateDepartureList(eastboundDepartures);
+        }
+    }
 }

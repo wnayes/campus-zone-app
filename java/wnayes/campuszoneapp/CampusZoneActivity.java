@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class CampusZoneActivity extends ActionBarActivity
        implements CampusZoneStopOverview.StopOverviewFragmentListener,
-                  SwipeRefreshLayout.OnRefreshListener {
+                  SwipeRefreshLayoutLegacy.OnRefreshListener {
 
     private CampusZoneStopOverview stopOverviewFragment;
 
@@ -57,14 +57,6 @@ public class CampusZoneActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus_zone);
-
-        // Show the last refresh time text.
-        SharedPreferences settings = getSharedPreferences(SETTINGS_GENERAL, 0);
-        if (settings.contains("LastRefresh")) {
-            Date lastRefresh = new Date(settings.getLong("LastRefresh", 0));
-            if (lastRefresh.getTime() > 0)
-                this.updateRefreshLabel(lastRefresh);
-        }
 
         // Setup the activity when new. See onRestoreInstanceState for configuration changes.
         if (savedInstanceState == null) {
@@ -101,7 +93,16 @@ public class CampusZoneActivity extends ActionBarActivity
         if (this.departureInfo == null)
             this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
 
-        SharedPreferences settings = getSharedPreferences(SETTINGS_STOP_DATA, 0);
+        // Show the last refresh time text.
+        SharedPreferences settings = getSharedPreferences(SETTINGS_GENERAL, 0);
+        if (settings.contains("LastRefresh")) {
+            Date lastRefresh = new Date(settings.getLong("LastRefresh", 0));
+            if (lastRefresh.getTime() > 0)
+                this.updateRefreshLabel(lastRefresh);
+        }
+
+        // Read past stop times, if available.
+        settings = getSharedPreferences(SETTINGS_STOP_DATA, 0);
         for (int stopId : CampusZoneActivity.campusZoneStops) {
             if (!settings.contains(Integer.toString(stopId)))
                 continue;
@@ -181,7 +182,7 @@ public class CampusZoneActivity extends ActionBarActivity
         Calendar refreshCal = Calendar.getInstance();
         refreshCal.setTime(refreshDate);
         String label = getString(R.string.last_refresh);
-        if (now.get(Calendar.DAY_OF_YEAR) != refreshCal.get(Calendar.DAY_OF_YEAR) &&
+        if (now.get(Calendar.DAY_OF_YEAR) != refreshCal.get(Calendar.DAY_OF_YEAR) ||
             now.get(Calendar.YEAR) != refreshCal.get(Calendar.YEAR)) {
             label += " on " + new SimpleDateFormat("EEE, MMM d, ''yy").format(refreshDate);
         } else {
@@ -208,21 +209,21 @@ public class CampusZoneActivity extends ActionBarActivity
             case 56043:
                 intent.putExtra("StartingDirection", Departure.Direction.WESTBOUND.getValue());
             case 56001:
-                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(4));
+                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(5));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56043));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56001));
                 break;
             case 56042:
                 intent.putExtra("StartingDirection", Departure.Direction.WESTBOUND.getValue());
             case 56002:
-                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(5));
+                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(6));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56042));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56002));
                 break;
             case 56041:
                 intent.putExtra("StartingDirection", Departure.Direction.WESTBOUND.getValue());
             case 56003:
-                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(6));
+                intent.putExtra("LRTStation", LRTStation.greenLineStations.get(7));
                 intent.putParcelableArrayListExtra("WestboundDepartures", departureInfo.get(56041));
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56003));
                 break;
@@ -244,7 +245,7 @@ public class CampusZoneActivity extends ActionBarActivity
     @Override
     public void onRefresh() {
         Log.d("CampusZoneActivity.onRefresh", "Refreshing stop times.");
-        ((SwipeRefreshLayout)stopOverviewFragment.getView().findViewById(R.id.swipe_container))
+        ((SwipeRefreshLayoutLegacy)stopOverviewFragment.getView().findViewById(R.id.swipe_container))
                 .setRefreshing(true);
         new refreshStopTimeAPICaller().execute(campusZoneStops);
     }
@@ -286,7 +287,7 @@ public class CampusZoneActivity extends ActionBarActivity
             refreshItem = null;
 
             if (stopOverviewFragment.isAdded()) {
-                ((SwipeRefreshLayout)stopOverviewFragment.getView().findViewById(R.id.swipe_container))
+                ((SwipeRefreshLayoutLegacy)stopOverviewFragment.getView().findViewById(R.id.swipe_container))
                         .setRefreshing(false);
             }
 

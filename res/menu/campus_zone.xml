@@ -12,7 +12,7 @@
 
     <!-- Refresh stop time information. -->
     <item android:id="@+id/menu_refresh_event"
-        android:icon="@drawable/refresh"
+        android:icon="@drawable/ic_refresh_white_36dp"
         android:title="@string/action_refresh"
         yourapp:showAsAction="ifRoom"/>
 </menu>

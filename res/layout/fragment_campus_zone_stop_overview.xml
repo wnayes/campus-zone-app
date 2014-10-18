@@ -5,29 +5,27 @@
     android:background="@color/campusZoneTanBackground"
     tools:context="wnayes.campuszoneapp.CampusZoneStopOverview">
 
-<!-- Green line showing during the refresh drag. -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    <!-- Green line showing during the refresh drag. -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/GreenLineView" />
+        <ImageView
+            android:src="@drawable/ic_refresh_white_36dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+<wnayes.campuszoneapp.SwipeRefreshLayoutLegacy
+    android:id="@+id/swipe_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <View xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/GreenLineView" />
-    <ImageView
-        android:src="@drawable/refresh"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"/>
-</RelativeLayout>
-
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/cardBackground">
@@ -145,5 +143,5 @@
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+</wnayes.campuszoneapp.SwipeRefreshLayoutLegacy>
 </RelativeLayout>

@@ -1,17 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/CampusZoneActionBar</item>
+    <style name="AppTheme" parent="Theme.AppCompat">
         <item name="actionBarStyle">@style/CampusZoneActionBar</item>
     </style>
 
     <!-- ActionBar styles -->
     <style name="CampusZoneActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:backgroundStacked">@color/lineColorGreen</item>
         <item name="backgroundStacked">@color/lineColorGreen</item>
-
-        <item name="android:actionBarTabStyle">@style/CampusZoneActionBarTabs</item>
         <item name="actionBarTabStyle">@style/CampusZoneActionBarTabs</item>
     </style>
 
@@ -77,6 +73,22 @@
     <style name="GreenLineViewLand" parent="GreenLineView">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/green_line_width</item>
+    </style>
+
+    <style name="StopDetailsDepartureTime">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="StopDetailsDepartureAMPM" parent="StopDetailsDepartureTime">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="StopDetailsDepartureType">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

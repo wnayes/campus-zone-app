@@ -149,6 +149,8 @@ public class Departure implements Parcelable {
     }
 
     public String getFormattedDepartureText() {
+        if (this.Actual && this.DepartureText.equals("Due"))
+            return this.DepartureText;
         return new SimpleDateFormat("h:mm").format(this.DepartureTime);
     }
 

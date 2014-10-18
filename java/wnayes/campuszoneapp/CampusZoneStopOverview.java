@@ -2,10 +2,12 @@ package wnayes.campuszoneapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -53,8 +56,8 @@ public class CampusZoneStopOverview extends Fragment {
         }
 
         // Setup the swipe to refresh.
-        SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout)infLayout.findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener)getActivity());
+        SwipeRefreshLayoutLegacy swipeLayout = (SwipeRefreshLayoutLegacy)infLayout.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener((SwipeRefreshLayoutLegacy.OnRefreshListener)getActivity());
         swipeLayout.setColorSchemeColors(getResources().getColor(R.color.lineColorGreen),
                                          getResources().getColor(R.color.cardBackground),
                                          Color.WHITE,

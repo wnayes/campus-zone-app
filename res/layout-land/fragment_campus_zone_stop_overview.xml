@@ -1,16 +1,35 @@
-<android.support.v4.widget.SwipeRefreshLayout
+<wnayes.campuszoneapp.SwipeRefreshLayoutLegacy
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/cardBackground">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/cardBackground"
     tools:context="wnayes.campuszoneapp.CampusZoneStopOverview">
+
+    <!-- Eastbound/Westbound labeling -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/route_direction_area_height"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:background="@color/campusZoneTanBackground"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <wnayes.campuszoneapp.VerticalTextView
+            android:text="@string/westbound"
+            style="@style/RouteDirectionLabel"/>
+        <!-- Spacer underneath the literal green line to help center east and westbound labels.-->
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="@dimen/green_line_width"
+            android:layout_width="@dimen/route_direction_area_height"/>
+        <wnayes.campuszoneapp.VerticalTextView
+            android:text="@string/eastbound"
+            style="@style/RouteDirectionLabel"/>
+    </LinearLayout>
 
     <View xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/GreenLineViewLand"/>
@@ -117,4 +136,4 @@
     </LinearLayout>
 </RelativeLayout>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+</wnayes.campuszoneapp.SwipeRefreshLayoutLegacy>

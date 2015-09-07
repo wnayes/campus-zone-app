@@ -30,10 +30,12 @@ public class DepartureArrayAdapter extends ArrayAdapter<Departure> {
             return view;
 
         ((TextView)view.findViewById(R.id.departure_time)).setText(departure.getFormattedDepartureText());
-        ((TextView)view.findViewById(R.id.departure_time_ampm))
-                       .setText(new SimpleDateFormat("a").format(departure.DepartureTime));
+        if (!departure.DepartureText.equals("Due")) {
+            ((TextView)view.findViewById(R.id.departure_time_ampm))
+                .setText(new SimpleDateFormat("a").format(departure.DepartureTime));
+        }
         ((TextView)view.findViewById(R.id.departure_time_type))
-                .setText(departure.Actual ? R.string.predicted : R.string.scheduled);
+            .setText(departure.Actual ? R.string.predicted : R.string.scheduled);
 
         return view;
     }

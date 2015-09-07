@@ -56,7 +56,7 @@ public class Departure implements Parcelable {
             else if (value.toUpperCase().equals("NORTHBOUND"))
                 return NORTHBOUND;
 
-            Log.e("Departure.Direction.fromString", "Unknown Direction string value");
+            Log.e("Direction.fromString", "Unknown Direction string value");
             return UNKNOWN;
         }
 
@@ -70,7 +70,7 @@ public class Departure implements Parcelable {
             else if (value == 4)
                 return NORTHBOUND;
 
-            Log.e("Departure.Direction.fromString", "Unknown Direction string value");
+            Log.e("Direction.fromString", "Unknown Direction string value");
             return UNKNOWN;
         }
 

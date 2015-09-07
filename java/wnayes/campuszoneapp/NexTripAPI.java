@@ -30,16 +30,16 @@ public class NexTripAPI {
         try {
             client.Execute(RestClient.RequestMethod.GET);
         } catch (SocketTimeoutException sce) {
-            Log.e("NexTripAPI.getDepartures", "Socket connection timeout.");
+            Log.e("NexTrip getDepartures", "Socket connection timeout.");
             throw sce;
         } catch (ConnectTimeoutException cte) {
-            Log.e("NexTripAPI.getDepartures", "HTTP Connection timeout.");
+            Log.e("NexTrip getDepartures", "HTTP Connection timeout.");
             throw cte;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        Log.d("NexTripAPI.getDepartures", url + ": " + ((client.getResponse() == null) ? "" : client.getResponse()));
+        Log.d("NexTrip getDepartures", url + ": " + ((client.getResponse() == null) ? "" : client.getResponse()));
 
         // Parse the stop times and grab the latest one.
         try {

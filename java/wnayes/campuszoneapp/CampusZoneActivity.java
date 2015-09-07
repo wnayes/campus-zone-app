@@ -228,7 +228,7 @@ public class CampusZoneActivity extends ActionBarActivity
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56003));
                 break;
             default:
-                Log.e("CampusZoneActivity.onStopSelected", "Bad stop ID selected");
+                Log.e("CZActivity.onStopSelected", "Bad stop ID selected");
         }
         startActivity(intent);
     }
@@ -244,7 +244,7 @@ public class CampusZoneActivity extends ActionBarActivity
 
     @Override
     public void onRefresh() {
-        Log.d("CampusZoneActivity.onRefresh", "Refreshing stop times.");
+        Log.d("CZActivity.onRefresh", "Refreshing stop times.");
         ((SwipeRefreshLayoutLegacy)stopOverviewFragment.getView().findViewById(R.id.swipe_container))
                 .setRefreshing(true);
         new refreshStopTimeAPICaller().execute(campusZoneStops);
@@ -272,7 +272,7 @@ public class CampusZoneActivity extends ActionBarActivity
                         stopIds.add(stopId);
                     }
                 } catch (Exception e) {
-                    Log.e("refreshStopTimeAPICaller", "NexTripAPI threw!");
+                    Log.e("refreshSTAPICaller", "NexTripAPI threw!");
                     e.printStackTrace();
                 }
             }

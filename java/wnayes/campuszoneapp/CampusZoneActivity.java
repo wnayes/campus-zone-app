@@ -5,9 +5,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.util.Log;
 import android.view.Menu;
@@ -23,10 +22,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 
-public class CampusZoneActivity extends ActionBarActivity
+public class CampusZoneActivity extends AppCompatActivity
        implements CampusZoneStopOverview.StopOverviewFragmentListener,
                   SwipeRefreshLayoutLegacy.OnRefreshListener {
 
@@ -184,9 +184,9 @@ public class CampusZoneActivity extends ActionBarActivity
         String label = getString(R.string.last_refresh);
         if (now.get(Calendar.DAY_OF_YEAR) != refreshCal.get(Calendar.DAY_OF_YEAR) ||
             now.get(Calendar.YEAR) != refreshCal.get(Calendar.YEAR)) {
-            label += " on " + new SimpleDateFormat("EEE, MMM d, ''yy").format(refreshDate);
+            label += " on " + new SimpleDateFormat("EEE, MMM d, ''yy", Locale.getDefault()).format(refreshDate);
         } else {
-            label += " at " + new SimpleDateFormat("h:mma").format(refreshDate);
+            label += " at " + new SimpleDateFormat("h:mma", Locale.getDefault()).format(refreshDate);
         }
         getSupportActionBar().setSubtitle(label);
     }
@@ -228,7 +228,7 @@ public class CampusZoneActivity extends ActionBarActivity
                 intent.putParcelableArrayListExtra("EastboundDepartures", departureInfo.get(56003));
                 break;
             default:
-                Log.e("CZActivity.onStopSelected", "Bad stop ID selected");
+                Log.e("CZAtvty.onStopSelected", "Bad stop ID selected");
         }
         startActivity(intent);
     }
@@ -265,15 +265,10 @@ public class CampusZoneActivity extends ActionBarActivity
         protected ArrayList<Integer> doInBackground(Integer... ids) {
             ArrayList<Integer> stopIds = new ArrayList<Integer>(ids.length);
             for (Integer stopId : ids) {
-                try {
-                    ArrayList<Departure> departures = NexTripAPI.getDepartures(stopId);
-                    if (departures != null && departures.size() > 0) {
-                        departureInfo.put(stopId, departures);
-                        stopIds.add(stopId);
-                    }
-                } catch (Exception e) {
-                    Log.e("refreshSTAPICaller", "NexTripAPI threw!");
-                    e.printStackTrace();
+                ArrayList<Departure> departures = NexTripAPI.getDepartures(stopId);
+                if (departures != null && departures.size() > 0) {
+                    departureInfo.put(stopId, departures);
+                    stopIds.add(stopId);
                 }
             }
 

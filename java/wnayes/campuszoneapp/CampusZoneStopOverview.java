@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -58,10 +59,10 @@ public class CampusZoneStopOverview extends Fragment {
         // Setup the swipe to refresh.
         SwipeRefreshLayoutLegacy swipeLayout = (SwipeRefreshLayoutLegacy)infLayout.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener((SwipeRefreshLayoutLegacy.OnRefreshListener)getActivity());
-        swipeLayout.setColorSchemeColors(getResources().getColor(R.color.lineColorGreen),
-                                         getResources().getColor(R.color.cardBackground),
-                                         Color.WHITE,
-                                         getResources().getColor(R.color.cardBackground));
+        swipeLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.trackColor),
+                                         ContextCompat.getColor(getContext(), R.color.mainColorBackground),
+                                         ContextCompat.getColor(getContext(), R.color.mainColorForeground),
+                                         ContextCompat.getColor(getContext(), R.color.mainColorBackground));
 
         // Handlers for each stop.
         StopViewClickHandler handler56043 = new StopViewClickHandler(56043); // WB westbound
@@ -189,7 +190,7 @@ public class CampusZoneStopOverview extends Fragment {
             paint.setAntiAlias(true);
 
             // Draw the circles
-            paint.setColor(getResources().getColor(R.color.lineColorGreen));
+            paint.setColor(getResources().getColor(R.color.trackColor));
             canvas.drawCircle(x / 2, y / 2, radius, paint);
             paint.setColor(Color.WHITE);
             canvas.drawCircle(x / 2, y / 2, radius * 0.8f, paint);

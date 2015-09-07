@@ -7,13 +7,13 @@
 
     <!-- ActionBar styles -->
     <style name="CampusZoneActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="backgroundStacked">@color/lineColorGreen</item>
+        <item name="backgroundStacked">@color/trackColor</item>
         <item name="actionBarTabStyle">@style/CampusZoneActionBarTabs</item>
     </style>
 
     <!-- ActionBar tabs styles -->
     <style name="CampusZoneActionBarTabs" parent="@style/Widget.AppCompat.ActionBar.TabView">
-        <item name="android:background">@color/cardBackground</item>
+        <item name="android:background">@color/mainColorBackground</item>
     </style>
 
     <style name="StopCircleStyle">
@@ -24,7 +24,7 @@
     </style>
 
     <style name="RouteDirectionLabel">
-        <item name="android:textColor">@color/campusZoneTanForeground</item>
+        <item name="android:textColor">@color/altColorForeground</item>
         <item name="android:textSize">@dimen/route_direction_fontsize</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -56,7 +56,7 @@
     </style>
 
     <style name="DepartureTimeDesc">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/mainColorForeground</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/departure_time_leftrightMargin</item>
@@ -65,21 +65,21 @@
     </style>
 
     <style name="GreenLineView">
-        <item name="android:background">@color/lineColorGreen</item>
-        <item name="android:layout_width">@dimen/green_line_width</item>
+        <item name="android:background">@color/trackColor</item>
+        <item name="android:layout_width">@dimen/track_width</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
     <style name="GreenLineViewLand" parent="GreenLineView">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/green_line_width</item>
+        <item name="android:layout_height">@dimen/track_width</item>
     </style>
 
     <style name="StopDetailsDepartureTime">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/mainColorForeground</item>
     </style>
     <style name="StopDetailsDepartureAMPM" parent="StopDetailsDepartureTime">
         <item name="android:textSize">20sp</item>
@@ -88,7 +88,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/mainColorForeground</item>
     </style>
 
 </resources>

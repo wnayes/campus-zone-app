@@ -3,7 +3,7 @@
     android:id="@+id/swipe_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/cardBackground">
+    android:background="@color/mainColorBackground">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,7 +16,7 @@
         android:layout_width="@dimen/route_direction_area_height"
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
-        android:background="@color/campusZoneTanBackground"
+        android:background="@color/altColorBackground"
         android:orientation="vertical"
         android:gravity="center_vertical">
         <wnayes.campuszoneapp.VerticalTextView

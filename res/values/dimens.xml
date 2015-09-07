@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="green_line_width">50dp</dimen>
+    <dimen name="track_width">50dp</dimen>
 
     <dimen name="stop_circle_fontsize">22sp</dimen>
     <dimen name="stop_circle_diameter">125dp</dimen>

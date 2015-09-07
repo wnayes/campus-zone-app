@@ -3,6 +3,7 @@ package wnayes.campuszoneapp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ public class DepartureArrayAdapter extends ArrayAdapter<Departure> {
         ((TextView)view.findViewById(R.id.departure_time)).setText(departure.getFormattedDepartureText());
         if (!departure.DepartureText.equals("Due")) {
             ((TextView)view.findViewById(R.id.departure_time_ampm))
-                .setText(new SimpleDateFormat("a").format(departure.DepartureTime));
+                .setText(new SimpleDateFormat("a", Locale.getDefault()).format(departure.DepartureTime));
         }
         ((TextView)view.findViewById(R.id.departure_time_type))
             .setText(departure.Actual ? R.string.predicted : R.string.scheduled);

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="cardBackground">#00529e</color>
-    <color name="lineColorGreen">#02814A</color>
+    <color name="mainColorBackground">#00529E</color>
+    <color name="mainColorForeground">#FFFFFF</color>
 
-    <color name="campusZoneTanBackground">#E6E1AA</color>
-    <color name="campusZoneTanForeground">#807B42</color>
+    <color name="altColorBackground">#E6E1AA</color>
+    <color name="altColorForeground">#807B42</color>
+
+    <color name="trackColor">#02814A</color>
 </resources>

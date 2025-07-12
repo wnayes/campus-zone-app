@@ -57,95 +57,86 @@
         android:layout_height="fill_parent"
         android:baselineAligned="false"
         android:gravity="center">
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight=".33"
             android:gravity="center">
             <LinearLayout
-                style="@style/DepartureTimeLandContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                style="@style/DepartureTimeLandContainerBottom">
                 <TextView android:id="@+id/stopDesc56001"
+                    android:text="@string/empty_desc"
                     style="@style/DepartureTimeDesc"/>
                 <TextView android:id="@+id/stopTime56001"
                     android:text="@string/empty_time"
                     style="@style/DepartureTimeText"/>
             </LinearLayout>
-
+            <Space style="@style/StopCircleFiller"/>
             <LinearLayout
-                style="@style/DepartureTimeLandContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
+                style="@style/DepartureTimeLandContainerTop">
                 <TextView android:id="@+id/stopDesc56043"
+                    android:text="@string/empty_desc"
                     style="@style/DepartureTimeDesc" />
                 <TextView android:id="@+id/stopTime56043"
                     android:text="@string/empty_time"
                     style="@style/DepartureTimeText"/>
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight=".33"
             android:gravity="center">
             <LinearLayout
-                style="@style/DepartureTimeLandContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                style="@style/DepartureTimeLandContainerBottom">
                 <TextView android:id="@+id/stopDesc56002"
+                    android:text="@string/empty_desc"
                     style="@style/DepartureTimeDesc"/>
                 <TextView android:id="@+id/stopTime56002"
                     android:text="@string/empty_time"
                     style="@style/DepartureTimeText"/>
             </LinearLayout>
-
+            <Space style="@style/StopCircleFiller"/>
             <LinearLayout
-                style="@style/DepartureTimeLandContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
+                style="@style/DepartureTimeLandContainerTop">
                 <TextView android:id="@+id/stopDesc56042"
+                    android:text="@string/empty_desc"
                     style="@style/DepartureTimeDesc"/>
                 <TextView android:id="@+id/stopTime56042"
                     android:text="@string/empty_time"
                     style="@style/DepartureTimeText"/>
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight=".33"
             android:gravity="center">
             <LinearLayout
-                style="@style/DepartureTimeLandContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                style="@style/DepartureTimeLandContainerBottom">
                 <TextView android:id="@+id/stopDesc56003"
+                    android:text="@string/empty_desc"
                     style="@style/DepartureTimeDesc"/>
                 <TextView android:id="@+id/stopTime56003"
                     android:text="@string/empty_time"
                     style="@style/DepartureTimeText"/>
             </LinearLayout>
-
+            <Space style="@style/StopCircleFiller"/>
             <LinearLayout
-                style="@style/DepartureTimeLandContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
+                style="@style/DepartureTimeLandContainerTop">
                 <TextView android:id="@+id/stopDesc56041"
+                    android:text="@string/empty_desc"
                     style="@style/DepartureTimeDesc"/>
                 <TextView android:id="@+id/stopTime56041"
                     android:text="@string/empty_time"
                     style="@style/DepartureTimeText"/>
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
 

@@ -13,8 +13,8 @@
 
     <dimen name="departure_time_fontsize">32sp</dimen>
     <dimen name="departure_time_leftrightMargin">16dp</dimen>
-    <dimen name="departure_time_landMargin">8dp</dimen>
     <dimen name="departure_time_marginDecrease">-8dp</dimen>
+    <dimen name="departure_time_landSpacerMargin">24dp</dimen>
 
     <dimen name="departure_time_desc_fontsize">14sp</dimen>
 </resources>

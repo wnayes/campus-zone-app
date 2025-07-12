@@ -6,6 +6,7 @@
     <string name="last_refresh">Last refresh</string>
     <string name="action_allstations">All Stations</string>
 
+    <string name="empty_desc">—</string>
     <string name="empty_time">--:--</string>
 
     <string name="station_name_warehousehennepin">Warehouse/Hennepin Ave</string>

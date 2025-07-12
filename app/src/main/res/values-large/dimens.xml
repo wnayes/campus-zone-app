@@ -1,0 +1,20 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">24dp</dimen>
+    <dimen name="activity_vertical_margin">24dp</dimen>
+
+    <dimen name="track_width">100dp</dimen>
+
+    <dimen name="stop_circle_fontsize">38sp</dimen>
+    <dimen name="stop_circle_diameter">200dp</dimen>
+
+    <dimen name="route_direction_area_height">40dp</dimen>
+    <dimen name="route_direction_fontsize">24sp</dimen>
+
+    <dimen name="departure_time_fontsize">54sp</dimen>
+    <dimen name="departure_time_leftrightMargin">24dp</dimen>
+    <dimen name="departure_time_landMargin">16dp</dimen>
+    <dimen name="departure_time_marginDecrease">-12dp</dimen>
+
+    <dimen name="departure_time_desc_fontsize">22sp</dimen>
+</resources>

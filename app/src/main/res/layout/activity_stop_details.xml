@@ -1,0 +1,14 @@
+<androidx.viewpager.widget.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainColorBackground"
+    tools:context="wnayes.campuszoneapp.StopDetailsActivity">
+    <androidx.viewpager.widget.PagerTabStrip
+        android:id="@+id/pagerTabStrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:textColor="@color/altColorForeground" />
+</androidx.viewpager.widget.ViewPager>

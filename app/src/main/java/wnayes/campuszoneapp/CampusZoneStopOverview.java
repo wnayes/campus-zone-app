@@ -3,24 +3,22 @@ package wnayes.campuszoneapp;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -104,20 +102,18 @@ public class CampusZoneStopOverview extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Save the label states of the stops.
-        Iterator it = mStopTimes.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            outState.putParcelable(pairs.getKey().toString(), (Departure)pairs.getValue());
-            it.remove();
+        for (HashMap.Entry<Integer, Departure> entry : mStopTimes.entrySet()) {
+            outState.putParcelable(entry.getKey().toString(), entry.getValue());
         }
+        mStopTimes.clear();
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (StopOverviewFragmentListener) activity;
@@ -139,12 +135,12 @@ public class CampusZoneStopOverview extends Fragment {
 
         String departureTime = departure.getFormattedDepartureText();
         this.mStopTimes.put(stopId, departure);
-        int resID = getResources().getIdentifier("stopTime" + Integer.toString(stopId), "id", this.getActivity().getPackageName());
+        int resID = getResources().getIdentifier("stopTime" + stopId, "id", this.getActivity().getPackageName());
         TextView stopLabel = (TextView)(view.findViewById(resID));
         stopLabel.setText(departureTime);
 
         // Use either "Arriving at" or "Arriving in" depending on the Departure format.
-        resID = getResources().getIdentifier("stopDesc" + Integer.toString(stopId), "id", this.getActivity().getPackageName());
+        resID = getResources().getIdentifier("stopDesc" + stopId, "id", this.getActivity().getPackageName());
         ((TextView)(view.findViewById(resID))).setText(
             departure.Actual ? R.string.predicted : R.string.scheduled);
     }
@@ -182,7 +178,7 @@ public class CampusZoneStopOverview extends Fragment {
         }
 
         @Override
-        protected void onDraw(Canvas canvas) {
+        protected void onDraw(@NonNull Canvas canvas) {
             super.onDraw(canvas);
             int x = getWidth();
             int y = getHeight();
@@ -207,7 +203,7 @@ public class CampusZoneStopOverview extends Fragment {
     }
 
     public class StopViewClickHandler implements View.OnClickListener {
-        private int stopId;
+        private final int stopId;
 
         public StopViewClickHandler(int stopId) {
             this.stopId = stopId;

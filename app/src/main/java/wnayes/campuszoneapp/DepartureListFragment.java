@@ -53,7 +53,7 @@ public class DepartureListFragment extends ListFragment {
             this.mAdapter = new DepartureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, mDepartures);
             setListAdapter(mAdapter);
         } else {
-            this.mAdapter = new DepartureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<Departure>());
+            this.mAdapter = new DepartureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>());
             setListAdapter(mAdapter);
         }
     }
@@ -64,11 +64,6 @@ public class DepartureListFragment extends ListFragment {
         getArguments().putParcelableArrayList(ARG_DEPARTURES, departures);
 
         mAdapter.clear();
-        if (Build.VERSION.SDK_INT >= 11)
-            mAdapter.addAll(departures);
-        else {
-            for (Departure departure : departures)
-                mAdapter.add(departure);
-        }
+        mAdapter.addAll(departures);
     }
 }

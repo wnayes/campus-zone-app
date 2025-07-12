@@ -8,8 +8,8 @@ import java.util.List;
 
 /** Represents a train station */
 public class LRTStation implements Parcelable {
-    private String name;
-    private String abbr;
+    private final String name;
+    private final String abbr;
 
     public LRTStation(String name, String abbreviation) {
         this.name = name;
@@ -36,7 +36,7 @@ public class LRTStation implements Parcelable {
         return new LRTStation("Stadium Village Station", "STVI");
     }
 
-    public static List<LRTStation> greenLineStations = new ArrayList<LRTStation>() {
+    public static List<LRTStation> greenLineStations = new ArrayList<>() {
         {
             add(new LRTStation("Target Field Station Platform 2", "TF2"));
             add(new LRTStation("Target Field Station Platform 2", "TF1"));
@@ -69,7 +69,7 @@ public class LRTStation implements Parcelable {
     }
 
     public static final Parcelable.Creator<LRTStation> CREATOR
-            = new Parcelable.Creator<LRTStation>() {
+            = new Parcelable.Creator<>() {
         public LRTStation createFromParcel(Parcel in) {
             return new LRTStation(in);
         }

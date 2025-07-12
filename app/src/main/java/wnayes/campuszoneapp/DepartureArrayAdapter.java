@@ -12,15 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 public class DepartureArrayAdapter extends ArrayAdapter<Departure> {
-    private ArrayList<Departure> departures;
+    private final ArrayList<Departure> departures;
 
     public DepartureArrayAdapter(Context context, int textViewResourceId, ArrayList<Departure> objects) {
         super(context, textViewResourceId, objects);
         this.departures = objects;
     }
 
-    public View getView(int position, View view, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View view, @NonNull ViewGroup parent) {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.departure_list_item, null);

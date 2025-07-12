@@ -7,16 +7,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class NexTripAPI {
     public static ArrayList<Departure> getDepartures(LRTStation station, Departure.Direction direction) {
-        String url = String.format("https://svc.metrotransit.org/NexTrip/902/%d/%s?format=json",
+        String url = String.format(Locale.ROOT, "https://svc.metrotransit.org/NexTrip/902/%d/%s?format=json",
                      direction.getValue(), station.getAbbreviation());
         return getDepartures(url);
     }
 
     public static ArrayList<Departure> getDepartures(int stopId) {
-        String url = String.format("https://svc.metrotransit.org/NexTrip/%d?format=json", stopId);
+        String url = String.format(Locale.ROOT, "https://svc.metrotransit.org/NexTrip/%d?format=json", stopId);
         return getDepartures(url);
     }
 

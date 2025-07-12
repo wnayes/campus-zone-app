@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -92,7 +93,7 @@ public class StopDetailsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putInt("StartingDirection", this.startingDirection.getValue());
@@ -113,15 +114,16 @@ public class StopDetailsActivity extends AppCompatActivity {
 
         public DepartureListPagerAdapter(FragmentManager fm) {
             super(fm);
-            map = new SparseArray<DepartureListFragment>(2);
+            map = new SparseArray<>(2);
         }
 
-        private SparseArray<DepartureListFragment> map;
+        private final SparseArray<DepartureListFragment> map;
 
         public DepartureListFragment getFragment(int position) {
             return map.get(position);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             DepartureListFragment newFragment;
@@ -134,7 +136,7 @@ public class StopDetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             map.remove(position);
             super.destroyItem(container, position, object);
         }

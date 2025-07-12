@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  * NexTrip Departure Information
- * http://www.datafinder.org/metadata/NexTripAPI.html
+ * https://svc.metrotransit.org/swagger/index.html
  *
  * ex: https://svc.metrotransit.org/NexTrip/56001?format=json
  */

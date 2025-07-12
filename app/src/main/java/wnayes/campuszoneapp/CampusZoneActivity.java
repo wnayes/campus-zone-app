@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.app.ActivityCompat;
@@ -35,13 +37,13 @@ public class CampusZoneActivity extends AppCompatActivity
     private CampusZoneStopOverview stopOverviewFragment;
 
     // SharedPreferences file names.
-    private static String SETTINGS_STOP_DATA = "SERIALIZED_STOPS";
-    private static String SETTINGS_GENERAL = "SETTINGS_GENERAL";
+    private static final String SETTINGS_STOP_DATA = "SERIALIZED_STOPS";
+    private static final String SETTINGS_GENERAL = "SETTINGS_GENERAL";
 
     // Initial refresh should happen only once the actionbar is ready and the
     // child fragment has loaded its view.
     private boolean refreshCheck_onCreateOptionsMenu = false;
-    private boolean refreshCheck_FragmentonCreateView = false;
+    private boolean refreshCheck_FragmentOnCreateView = false;
     private boolean refreshCheck_done = false;
 
     /** Storage for the latest sets of departure info, accessed via stop id. */
@@ -53,7 +55,7 @@ public class CampusZoneActivity extends AppCompatActivity
     // 56001 WB eastbound
     // 56002 EB eastbound
     // 56003 SV eastbound
-    public static final Integer campusZoneStops[] = { 56043, 56042, 56041, 56001, 56002, 56003 };
+    public static final Integer[] campusZoneStops = { 56043, 56042, 56041, 56001, 56002, 56003 };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class CampusZoneActivity extends AppCompatActivity
         super.onStart();
 
         if (this.departureInfo == null)
-            this.departureInfo = new HashMap<Integer, ArrayList<Departure>>(6);
+            this.departureInfo = new HashMap<>(6);
 
         // Show the last refresh time text.
         SharedPreferences settings = getSharedPreferences(SETTINGS_GENERAL, 0);
@@ -123,7 +125,7 @@ public class CampusZoneActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         // Save the fragment's instance
@@ -131,12 +133,12 @@ public class CampusZoneActivity extends AppCompatActivity
 
         // Save initial refresh state info
         savedInstanceState.putBoolean("refreshCheck_done", this.refreshCheck_done);
-        savedInstanceState.putBoolean("refreshCheck_FragmentonCreateView", this.refreshCheck_FragmentonCreateView);
+        savedInstanceState.putBoolean("refreshCheck_FragmentOnCreateView", this.refreshCheck_FragmentOnCreateView);
         savedInstanceState.putBoolean("refreshCheck_onCreateOptionsMenu", this.refreshCheck_onCreateOptionsMenu);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         // Restore the fragment's instance
@@ -144,7 +146,7 @@ public class CampusZoneActivity extends AppCompatActivity
 
         // Restore refresh check info
         this.refreshCheck_done = savedInstanceState.getBoolean("refreshCheck_done");
-        this.refreshCheck_FragmentonCreateView = savedInstanceState.getBoolean("refreshCheck_FragmentonCreateView");
+        this.refreshCheck_FragmentOnCreateView = savedInstanceState.getBoolean("refreshCheck_FragmentOnCreateView");
         this.refreshCheck_onCreateOptionsMenu = savedInstanceState.getBoolean("refreshCheck_onCreateOptionsMenu");
     }
 
@@ -191,12 +193,15 @@ public class CampusZoneActivity extends AppCompatActivity
         } else {
             label += " at " + new SimpleDateFormat("h:mma", Locale.getDefault()).format(refreshDate);
         }
-        getSupportActionBar().setSubtitle(label);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setSubtitle(label);
+        }
     }
 
     @Override
     public void onCreatedView() {
-        this.refreshCheck_FragmentonCreateView = true;
+        this.refreshCheck_FragmentOnCreateView = true;
         this.refreshCheck();
     }
 
@@ -239,7 +244,7 @@ public class CampusZoneActivity extends AppCompatActivity
     private void refreshCheck() {
         if (this.refreshCheck_done)
             return;
-        if (this.refreshCheck_FragmentonCreateView && this.refreshCheck_onCreateOptionsMenu) {
+        if (this.refreshCheck_FragmentOnCreateView && this.refreshCheck_onCreateOptionsMenu) {
             this.onRefresh();
             this.refreshCheck_done = true;
         }
@@ -266,10 +271,10 @@ public class CampusZoneActivity extends AppCompatActivity
         }
 
         protected ArrayList<Integer> doInBackground(Integer... ids) {
-            ArrayList<Integer> stopIds = new ArrayList<Integer>(ids.length);
+            ArrayList<Integer> stopIds = new ArrayList<>(ids.length);
             for (Integer stopId : ids) {
                 ArrayList<Departure> departures = NexTripAPI.getDepartures(stopId);
-                if (departures != null && departures.size() > 0) {
+                if (departures != null && !departures.isEmpty()) {
                     departureInfo.put(stopId, departures);
                     stopIds.add(stopId);
                 }
@@ -290,7 +295,7 @@ public class CampusZoneActivity extends AppCompatActivity
             }
 
             // If the event can't be found, no UI refresh should occur.
-            if (stopIds.size() == 0) {
+            if (stopIds.isEmpty()) {
                 Toast.makeText(getApplicationContext(),
                         "Could not download stop info. Check internet?",
                         Toast.LENGTH_SHORT).show();

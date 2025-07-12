@@ -81,12 +81,12 @@ public class CampusZoneActivity extends AppCompatActivity
 
         SharedPreferences.Editor settings = getSharedPreferences(SETTINGS_STOP_DATA, 0).edit();
         settings.clear();
-        Iterator it = this.departureInfo.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            settings.putString(pairs.getKey().toString(), Departure.createList((ArrayList<Departure>)pairs.getValue()).toString());
-            it.remove();
+        for (Map.Entry<Integer, ArrayList<Departure>> entry : this.departureInfo.entrySet()) {
+            String key = entry.getKey().toString();
+            String value = Departure.createList(entry.getValue()).toString();
+            settings.putString(key, value);
         }
+        this.departureInfo.clear();
         settings.apply();
     }
 
